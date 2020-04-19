@@ -1,0 +1,23 @@
+<% r_list = {} %>
+<% if current_page.data.tags %>
+<% sitemap.resources.each do |r| %>
+<% if incl.map {|e| r.path.include?(e)}.any?  && r.data.tags && r.data.name && !r.data.name.eql?(current_page.data.name) %>
+<% unless r.path.include?(excl) && !excl.empty? %>
+<% for t in current_page.data.tags.split(",") %>
+<% for t1 in r.data.tags.split(",") %>
+<% if t.strip.eql?(t1.strip) %>
+<% r_list[r.data.name.strip] = r %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+<ul>
+<% r_list.first(5).each do |n,p| %>
+<li><%=link_to n, "/"+p.path %>
+<% end %>
+</ul>
+

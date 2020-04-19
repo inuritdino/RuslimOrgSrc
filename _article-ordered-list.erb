@@ -1,0 +1,45 @@
+<% r_list = {} %>
+<% sitemap.resources.each do |r| %>
+<% if r.path.include?(incl) && r.data.name %>
+<% unless r.path.include?(excl) && !excl.empty? %>
+<% if !r.data.not_in_list %>
+<% r_list[r.data.name.strip] = r %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+<% s = "&nbsp;" %>
+<% if name.length != 0 %>
+<h1><%= name %></h1>
+<% end %>
+<% c = "" %>
+<table class="article-list">
+<% if incl.include?("ru/") %>
+<tr><th>Название</th><th>Автор</th><th>Дата</th></tr>
+<% else %>
+<tr><th>Name</th><th>Author</th><th>Date</th></tr>
+<% end %>
+
+
+<% r_list.sort_by {|k,v| k}.to_h.each do |n,p| %>
+
+<% if c != n.capitalize[0] %>
+<tr class="letter-row">
+  <td>
+    <% c = n.capitalize[0] %>
+    <%= c %>
+  </td>
+  <td></td><td></td>
+</tr>
+<% end %>
+<tr>
+  <td><%= link_to(n, "/"+p.path) %></td>
+  <td><%= p.data.author || s %></td>
+  <td><%= p.data.date || s %></td>
+</tr>
+
+<% end %>
+
+</table>
+

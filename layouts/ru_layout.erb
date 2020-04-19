@@ -1,0 +1,165 @@
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+<!doctype html>
+<html>
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title><%= current_page.data.title || current_page.data.name || "Ruslim.Org" %></title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" /> 
+    <%= stylesheet_link_tag "ru_site" %>
+    <%= javascript_include_tag "site" %>
+    <!-- <script src="https://unpkg.com/lunr/lunr.min.js"></script> -->
+    <!-- Google code for tracking -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39462646-1', 'auto');
+      ga('set','anonymizeIp',true);
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+      <body class="<%= page_classes %>">
+      <header>
+	<div id="main-menu">
+	  <% link_to '/ru/index.html' do %>
+	  <%= image_tag '/images/ruslim_logo.png' %>
+	  <% end %>
+	  <div id="dropdown">
+	    <%= link_to 'Эссе', '/ru/essay.html' %>
+	    <%= link_to 'Читательский клуб', '/ru/reading-club.html' %>
+	    <%= link_to '(Бес)полезное', '/ru/valuable.html' %>
+	    <%= link_to 'О нас', '/ru/about-us/epistemological-tutorial.html' %>
+	  </div>
+	</div>
+	<div id="lang">
+	  <% if current_page.path.include? 'ru/' %>
+	  <span id="lang-bigger"><%= link_to 'Ру', '/ru/index.html' %></span>
+	  <span id="lang-smaller"><%= link_to 'En', '/index.html' %></span>
+	  <% else %>
+	  <span id="lang-smaller"><%= link_to 'Ру', '/ru/index.html' %></span>
+	  <span id="lang-bigger"><%= link_to 'En', '/index.html' %></span>
+	  <% end %>
+	</div>
+	<!-- <div id="search-box"> -->
+	<!--   <form id="search" method="get" action="" onsubmit="showSearchResults('episteme')"> -->
+	<!--     <input type="text" value="" size="21" maxlength="120"/> -->
+	<!--     <input type="submit" value="search" /> -->
+	<!--   </form> -->
+	<!--   <button onclick="showSearchResults("episteme")">Click me</button> -->
+	<!-- </div> -->
+	<!-- <div id="header-image"> -->
+	<!--   <img src="/images/banners/ruslim_theme_en.jpg" /> -->
+	<!-- </div> -->
+	<div id="print-image">
+	  <img src="/images/ruslim_logo_print.png" />
+	</div>
+	<div id="print-header">
+	  Спасибо, что остаетесь с нами даже вне Интернет. Ruslim.Org
+	  &mdash; это чтение и только, и мы надеемся, что Вы
+	  наслаждаетесь им. Ссылки подчеркнуты и скрыты в печатном
+	  варианте статей: проверьте их, когда вы снова будете онлайн.
+	</div>
+      </header>
+      <article>
+	<div id="content">
+	  <div id="buttons">
+	    <span id="print" onclick="window.print()">печать</span> <span id="hide-right" onclick="hideRightPanel()">&raquo;</span>
+	  </div>
+	  <% if current_page.data.name %>
+	  <h1 id="name"><%= current_page.data.name %></h1>
+	  <% end %>
+	  <% if current_page.data.date %>
+	  <p id="date">Дата: <%= current_page.data.date %></p>
+	  <% end %>
+	  <% if current_page.data.author %>
+	  <p id="author">Автор: <%= current_page.data.author %></p>
+	  <% end %>
+	  <% if current_page.data.tags %>
+	    <% tag_list = {} %>
+	    <% tag_not_found = true %>
+	    <% sitemap.resources.each do |r| %>
+	    <% if r.path.include?("ru/tags/") && r.data.name %>
+	    <% tag_list[r.path] = r.data.name.strip.downcase %>
+	    <% end %>
+	    <% end %>
+	  <p id="tags">
+	    <% current_page.data.tags.split(',').each do |tag| %>
+	    <% k = tag_list.key(tag.strip.downcase) %>
+	    <% if k != nil %>
+	    <span class="tag-found"><%= link_to(tag.strip,"/"+k) %></span>
+	    <% tag_not_found = false %>
+	    <% end %>
+	    <% end %>
+	    <% if tag_not_found %>
+	    <span class="tag-not-found"><%= link_to(tag.strip,"/ru/tags/not-found.html")%></span>
+	    <% end %>
+	  </p>
+	  <% end %>
+	  <% if current_page.data.image %>
+	  <img id="article-image" src=<%= "/ru/images/"+current_page.data.image %> >
+	  <% end %>
+	  <%= yield %>
+	  <% if current_page.data.tag_description %>
+	   <%= partial("/article-tagged-list", :locals => {:excl => "", :incl => ["ru/essay/", "ru/valuable/","ru/reading-club/","ru/about-us/"], :name => "Статьи с тэгом" }) %>
+	  <% end %>
+	  <br /><br />
+	</div>
+	<div id="right">
+	  <div>
+	    <h3>Темы</h3>
+	    <%= partial("/common-themes", :locals => {:excl => "", :incl => ["ru/essay/","ru/valuable/","ru/reading-club/","ru/about-us"], :tag_search => "ru/tags/"}) %>
+	  </div>
+	  <div>
+	    <% if current_page.data.tags %>
+	    <h3>Похожие статьи</h3>
+	    <%= partial("/similar-articles", :locals => {:excl => "", :incl => ["ru/essay/","ru/valuable/","ru/reading-club/","ru/about-us"]}) %>
+	    <% end %>
+	  </div>
+	  <div>
+	    <h3>Последние статьи</h3>
+	    <%= partial("/most-recent-articles", :locals => {:excl => "", :incl => ["ru/essay/","ru/reading-club/","ru/about-us/","ru/valuable/"]}) %>
+	  </div>
+	  <!-- <div> -->
+	  <!--   <%= partial("/iterate-with-summary", :locals => { :name => "Лента новостей", :header_level => 3, :incl => ["ru/news"], :excl => "", :max_count => 3, :date_string => "Дата", :read_more_string => "Читать далее" }) %> -->
+	  <!-- </div> -->
+	  <div id="last-update">
+	    <%= "Обновлен: " + Time.now.strftime("%d.%m.%Y %H:%M") %>
+	  </div>
+	</div>
+      </article>
+      <footer>
+	<div>
+	  <ul>
+	    <li><%= link_to 'Обратная связь', '/ru/contact-us.html' %></li>
+	    <li><%= link_to 'ВКонтакте', 'http://vk.com/ruslimorg' %></li>
+	    <li><%= link_to 'Техническая информация', '/ru/about-us/technical-info.html' %></li>
+	  </ul>
+	</div>
+	<div>
+	  <ul>
+	    <li><%= link_to 'Главная', '/ru/index.html' %></li>
+	    <li><%= link_to 'Как читать', '/ru/about-us/how-to-read.html' %></li>
+	    <li><%= link_to 'Этимология', '/ru/about-us/etymology.html' %></li>
+	  </ul>
+	</div>
+	<div>
+	  <ul>
+	    <li><%= link_to 'Спецпроект по теории эволюции', 'http://evo21.ruslim.org' %></li>	    
+	    <li><%= link_to 'Дорога в Мекку', 'http://tomecca.ruslim.org' %></li>	    
+	  </ul>
+	</div>
+	<div id="copyright">
+	  <p>&copy; 2013&ndash;2020 Ruslim.Org.
+	  Все права защищены. <br /><a href="https://creativecommons.org/licenses/by/3.0/deed.ru"><img src="/images/by.png" alt="license" width="100px"/></a></p>
+	</div>
+      </footer>
+    </body>
+</html>

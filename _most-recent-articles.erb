@@ -1,0 +1,20 @@
+<% if !defined?(max_count) %>
+<% max_count = 10 %>
+<% end %>
+
+<% r_list = {} %>
+<% sitemap.resources.each do |r| %>
+<% if incl.map {|e| r.path.include?(e)}.any? && r.data.date && r.data.name %>
+<% unless r.path.include?(excl) && !excl.empty? %>
+<% r_list[r.data.name.strip] = r %>
+<% end %>
+<% end %>
+<% end %>
+
+<ul>
+  <% r_list.sort_by {|k,d| d.data.date.split(/-|\/|\./).reverse.map {|e| -e.to_i}}.to_h.first(max_count).each do |n,p| %>
+    <!-- <li><%= p.data.date+": " %><%=link_to n, "/"+p.path %></li> -->
+    <li><%=link_to n, "/"+p.path %></li>
+  <% end %>
+</ul>
+

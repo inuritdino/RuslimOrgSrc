@@ -1,0 +1,56 @@
+<h1><%= name %></h1>
+
+<% if !defined?(date_string) %>
+<% if defined?(ru) %>
+<% date_string = "Дата" %>
+<% else %>
+<% date_string = "Date" %>
+<% end %>
+<% end %>
+<% if !defined?(read_more_string) %>
+<% if defined?(ru) %>
+<% read_more_string = "Читать далее" %>
+<% else %>
+<% read_more_string = "Read more" %>
+<% end %>
+<% end %>
+
+<% r_list = {} %>
+<% sitemap.resources.each do |r| %>
+   <% if incl.instance_of? String %>
+      <% incl = [incl] %>
+   <% end %>
+   <% if incl.map {|e| r.path.include?(e)}.any? && r.data.name && !r.data.not_in_list %>
+      <% if (defined?(featured) && r.data.featured) || (!defined?(featured)) %>
+      	 <% unless r.path.include?(excl) && !excl.empty? %>
+      	    <% key = r.data.name.strip %>
+      	    <% r_list[key] = r %>
+	 <% end %>
+      <% end %>
+   <% end %>
+<% end %>
+
+<% r_list.sort_by {|k,d| d.data.name}.each do |n,r| %>
+
+<h2><%= link_to(r.data.name, "/"+r.path) %></h2>
+
+<% if r.data.date %>
+<div class="date">
+<%= date_string %>: <%= r.data[:date] %>
+</div>
+<% end %>
+
+<% if defined?(longer) %>
+<div class="summary" style="max-height: 200px;">
+<%= r.render({layout: false}) %>
+<p class="read-more"><%= link_to(read_more_string, "/"+r.path)%></p>
+</div>
+<% else %>
+<div class="summary">
+<%= r.render({layout: false}) %>
+<p class="read-more"><%= link_to(read_more_string, "/"+r.path)%></p>
+</div>
+<% end %>
+
+
+<% end %>

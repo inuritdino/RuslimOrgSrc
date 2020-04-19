@@ -1,0 +1,59 @@
+<h1><%= name %></h1>
+
+<% if !defined?(date_string) %>
+<% date_string = "Date" %>
+<% end %>
+<% if !defined?(read_more_string) %>
+<% read_more_string = "Read more" %>
+<% end %>
+
+<% r_list = {} %>
+<% sitemap.resources.each do |r| %>
+<% if incl.map {|e| r.path.include?(e)}.any? && !r.data.not_in_list && r.data.date %>
+<% if  r.data.name %>
+<% key = r.data.name.strip %>
+<% end %>
+<% if  r.data.date %>
+<% key = r.data.date.strip %>
+<% end %>
+<% if (defined?(featured) && r.data.featured) || (!defined?(featured)) %>
+<% unless r.path.include?(excl) && !excl.empty? %>
+
+<% r_list[key] = r %>
+
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+
+<%# Sort by date using '-','.', or '/' as delimiters %>
+<% r_list.sort_by {|k,d| d.data.date.split(/-|\/|\./).reverse.map {|e| -e.to_i}}.to_h.first(max_count).each do |n,r| %>
+
+<% if defined?(item_header_level) %>
+<h<%= item_header_level %>><%=r.data.name%></h<%= item_header_level%>>
+<% end %>
+
+<% if r.data.date %>
+<div class="date">
+<%= date_string %>: <%= r.data[:date] %>
+</div>
+<% end %>
+
+<% if defined?(longer) %>
+<div class="summary" style="max-height: 200px;">
+<%= r.render({layout: false}) %>
+<p class="read-more"><%= link_to(read_more_string, "/"+r.path)%></p>
+</div>
+<% else %>
+<div class="summary">
+<%= r.render({layout: false}) %>
+<p class="read-more"><%= link_to(read_more_string, "/"+r.path)%></p>
+</div>
+<% end %>
+
+
+<% end %>
+
+
+

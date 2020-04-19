@@ -1,0 +1,35 @@
+<% tag_list = {} %>
+<% if !defined?(tag_search) %>
+<% tag_search = "tags/"%>
+<% end %>
+
+<% tag_search_list = {} %>
+
+<% sitemap.resources.each do |r| %>
+<% if r.data.tags && incl.map {|e| r.path.include?(e)}.any?%>
+<% unless r.path.include?(excl) && !excl.empty? %>
+<% r.data.tags.split(',').each do |t| %>
+<% if tag_list.key? (t.strip) %>
+<% tag_list[t.strip] += 1 %>
+<% else %>
+<% tag_list[t.strip] = 1 %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+<% if r.path.include?(tag_search) && r.data.name %>
+<% tag_search_list[r.path] = r.data.name.strip.downcase %>
+<% end %>
+
+<% end %>
+
+
+<ul>
+  <% tag_list.sort_by{|t,c| c}.reverse.to_h.each do |t,c| %>
+  <% k = tag_search_list.key(t.strip.downcase) %>
+  <% if k != nil %>
+  <li><%= link_to t.strip.capitalize, "/"+k %><span class="tag-count"><%= c %></span></li>
+  <% end %>
+  <% end %>
+</ul>

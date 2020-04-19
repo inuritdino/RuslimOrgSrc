@@ -1,0 +1,70 @@
+---
+name: "Практика эпистемологии"
+---
+
+Ruslim.Org &mdash; это *практическое* руководство по
+эпистемологии/невежеству. Мы изучаем *количественные* аспекты того,
+что мы знаем и как, применяя их к *реальным* жизненным ситуациям, для
+облагораживания *изучающих* и *общества* ([читать
+далее](/ru/about-us/epistemological-tutorial.html)).
+
+Не знаешь, где начать? Начни со [смерти](/ru/essay/death.html) -->
+[Исход жизни](/ru/essay/end-of-life.html) --> 
+[Эмпирический тест парадокса жизни без цели](/ru/essay/life-without-goal-test.html) -->
+прочитай [Исповедь](/ru/reading-club/confession-tolstoy.html) Л. Н. Толстого
+
+---
+
+Практическое руководство "Смерть и жизнь":  
+(*1,2,... -- утверждения; I,II,... -- выводы; см. также ссылки*)
+
+- 1: [Разумная деятельность имеет цель/желание, обоснование деятельности](/ru/essay/end-of-life.html#section-1)
+- 2: [Цель разумной деятельности лежит за ее концом](/ru/essay/end-of-life#section-2)
+- 3: [Смерть -- неизбежный конец жизни](/ru/essay/death.html)
+- I: --**1 + 2 + 3**--> [Результат жизни -- после смерти](/ru/essay/end-of-life.html#section-2)
+- 4: [Все, что выходит за пределы жизни, относится к вере](/ru/essay/end-of-life.html#section-3)
+- II: --**I + 4**--> [Цель всей (разумной) жизни относится к вере](/ru/essay/end-of-life.html#section-3)
+- III: --**1**-->  [Жизнь без всеобъемлющей цели неразумна, особенно эмпирически](/ru/essay/life-without-goal-test.html)
+- VII.1: --**I + II + III**-->  Цель жизни без веры невозможна. Жизнь без веры неразумна
+- ...
+
+---
+
+Читайте также: [Как читать](/ru/about-us/how-to-read.html) | [Кто мы?](/ru/about-us/who-are-we.html) | [Этимология
+Ruslim](/ru/about-us/etymology.html)
+
+[Свяжитесь с нами](/ru/contact-us.html)
+
+<div class="front-page-wrapper">
+<div class="front-page">
+<h4>Новые эссе</h4>
+<%= partial("/most-recent-articles", :locals => {:excl => "", :incl => ["ru/essay/"]}) %>
+</div>
+
+<div class="front-page">
+<h4>Новое в читательском клубе</h4>
+<%= partial("/most-recent-articles", :locals => {:excl => "", :incl => ["ru/reading-club/"]}) %>
+</div>
+</div>
+
+---
+
+<div>
+<%= partial("/iterate-with-summary", :locals => { :name => "Избранное", :header_level => 3, :incl => ["ru/essay","ru/reading-club","ru/valuable"], :excl => "", :max_count => 3, :longer => 1, :featured => 1, :ru => 1 }) %>
+</div>
+
+---
+
+<h3>Ruslim.Org в картинках</h3>
+
+<%= tag :img, :src => "/ru/images/banners/ruslim_theme.jpg", :width => "100%", :alt => "Меняя образование" %>
+
+<%= tag :img, :src => "/ru/images/banners/great_idea.jpg", :width => "100%", :alt => "Новые замечательные идеи" %>
+
+<%= tag :img, :src => "/ru/images/banners/main_theme.jpg", :width => "100%", :alt => "Множество путей" %>
+
+<%= tag :img, :src => "/ru/images/banners/death.jpg", :width => "100%", :alt => "Смерть" %>
+
+
+
+
